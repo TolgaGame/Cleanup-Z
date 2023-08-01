@@ -48,3 +48,7 @@ Description: <p><strong>Cleanup-Z</strong> is a comprehensive toolkit specially 
     <li><strong>Description:</strong> Unity editor tool to list duplicate files in the project's Assets folder.</li>
     <li><strong>Usage:</strong> Access via "Tools" > "Cleanup-Z/List Duplicate Files". It scans all files in the Assets folder, identifies duplicates (excluding .meta files), and displays them in the GUI.</li>
 </ul>
+
+<h2>INSTALLATION</h2>
+<li>Import <a href="https://github.com/TolgaGame/Cleanup-Z/releases">cleanup-z.unitypackage</a> via <em>Assets-Import Package</em></li>
+<li>Asset Store</em></li>
