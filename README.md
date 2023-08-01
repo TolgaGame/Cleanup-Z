@@ -19,3 +19,41 @@ Description: <p><strong>Cleanup-Z</strong> is a comprehensive toolkit specially 
 <p><strong>Seamless Integration:</strong> Cleanup-Z seamlessly integrates into your Unity environment, providing easy access to our utilities whenever you need them.</p>
 <p><strong>Regular Updates:</strong> Count on our dedicated team for regular updates, ensuring compatibility with the latest Unity versions and incorporating valuable user feedback.</p>
 <p>Whether you're a seasoned Unity developer or just embarking on your Unity journey, <strong>Cleanup-Z</strong> is your trusted companion for optimizing your projects. Don't wait any longer; experience the magic of <strong>Cleanup-Z</strong> and transform your Unity projects into works of excellence!</p>
+
+<h2>INDEX</h2>
+
+<ul>
+<h3>DisableDebugLogStatementsMenuItem</h3>
+    <li><strong>Description:</strong> Unity editor tool to auto-comment Debug.Log statements in C# scripts, optimizing build performance.
+    <li><strong>Usage:</strong> Access via "Tools" > "Cleanup-Z/Comment DebugLog". Replaces Debug.Log with // Debug.Log in script files.
+</ul>
+
+<ul>
+<h3>ListComponentsIn</h3>
+    <li><strong>Description:</strong> Unity editor tool to list all components attached to GameObjects in the current scene.</li>
+    <li><strong>Usage:</strong> Access via "Tools" > "Cleanup-Z/All Components in Scene". It collects and displays all components in the scene on the GUI.</li>
+</ul>
+
+<ul>
+<h3>UnappliedPrefabsList</h3>
+    <li><strong>Description:</strong> Unity editor tool to list GameObjects in the scene with unapplied prefab overrides.</li>
+    <li><strong>Usage:</strong> Access via "Tools" > "Cleanup-Z/List Unapplied Prefabs". It searches for GameObjects that have overrides applied to the source prefab but haven't been applied yet.</li>
+</ul>
+
+<ul>
+<h3>CleanMissingReferencesMenuItem</h3>
+    <li><strong>Description:</strong> Unity editor tool to clean missing references in the scene by removing components with missing scripts in GameObjects.</li>
+    <li><strong>Usage:</strong> Access via "Tools" > "Cleanup-Z/Clean Missing References". It detects and removes components with missing scripts from GameObjects in the scene.</li>
+</ul>
+
+<ul>
+<h3>UncompressedImagesList</h3>
+    <li><strong>Description:</strong> Unity editor tool to find uncompressed images in the project's Assets folder.</li>
+    <li><strong>Usage:</strong> Access via "Tools" > "Cleanup-Z/Find Uncompressed Images". It scans all image files (e.g., .png, .jpg, .jpeg, .tga, .gif) in the project's Assets folder and lists those with dimensions not being powers of two (e.g., 205x297).</li>
+</ul>
+
+<ul>
+<h3>DuplicateFilesList</h3>
+    <li><strong>Description:</strong> Unity editor tool to list duplicate files in the project's Assets folder.</li>
+    <li><strong>Usage:</strong> Access via "Tools" > "Cleanup-Z/List Duplicate Files". It scans all files in the Assets folder, identifies duplicates (excluding .meta files), and displays them in the GUI.</li>
+</ul>
