@@ -4,15 +4,6 @@
 
 Description: <p><strong>Cleanup-Z</strong> is a comprehensive toolkit specially designed to enhance your Unity development experience. Whether you're a solo developer working on a small project or part of a team handling complex games, our collection of utilities will significantly boost your productivity and help you achieve seamless project management.</p>
 
-<h2>Key Features:</h2>
-
-<ul>
-  <li><strong>Duplicate Object and Component Finder:</strong> Instantly discover and manage duplicate elements in your scene, ensuring a well-organized project hierarchy.</li>
-  <li><strong>Script Scanner:</strong> Effortlessly scan through your scripts to identify any potential issues or inefficiencies that might impact your project's performance.</li>
-  <li><strong>Debug Log Optimizer:</strong> Take control of your debug logs with ease, optimizing the debugging process for a smoother development cycle.</li>
-  <li><strong>Optimization Tools:</strong> Fine-tune your project for peak performance, delivering an exceptional user experience with enhanced gameplay and loading times.</li>
-</ul>
-
 <h2>Why Choose Cleanup-Z?</h2>
 
 <p><strong>Unleash Productivity:</strong> Our user-friendly tools empower you to focus on creativity while eliminating repetitive and time-consuming tasks from your workflow.</p>
@@ -20,7 +11,7 @@ Description: <p><strong>Cleanup-Z</strong> is a comprehensive toolkit specially 
 <p><strong>Regular Updates:</strong> Count on our dedicated team for regular updates, ensuring compatibility with the latest Unity versions and incorporating valuable user feedback.</p>
 <p>Whether you're a seasoned Unity developer or just embarking on your Unity journey, <strong>Cleanup-Z</strong> is your trusted companion for optimizing your projects. Don't wait any longer; experience the magic of <strong>Cleanup-Z</strong> and transform your Unity projects into works of excellence!</p>
 
-<h2>INDEX</h2>
+<h2>Key Features:</h2>
 
 <ul>
 <h3>Comment DebugLog</h3>
