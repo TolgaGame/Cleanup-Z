@@ -2,8 +2,6 @@
 
 <p>Welcome to <strong>Cleanup-Z</strong>, your ultimate solution for optimizing Unity projects, both casual and large-scale. Our powerful toolkit is packed with efficient cleaning tools to streamline your development process. From identifying and managing duplicate objects and components to scanning scripts and disabling debug logs, <strong>Cleanup-Z</strong> empowers you to achieve a clutter-free and optimized Unity project. Embrace the power of <strong>Cleanup-Z</strong> and elevate your Unity workflow today!</p>
 
-Description: <p><strong>Cleanup-Z</strong> is a comprehensive toolkit specially designed to enhance your Unity development experience. Whether you're a solo developer working on a small project or part of a team handling complex games, our collection of utilities will significantly boost your productivity and help you achieve seamless project management.</p>
-
 <h2>Why Choose Cleanup-Z?</h2>
 
 <p><strong>Unleash Productivity:</strong> Our user-friendly tools empower you to focus on creativity while eliminating repetitive and time-consuming tasks from your workflow.</p>
