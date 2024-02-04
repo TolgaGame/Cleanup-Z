@@ -1,26 +1,19 @@
-using UnityEditor;
-using UnityEngine;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using UnityEditor;
+using UnityEngine;
 
-public class CleanupManager : EditorWindow
-{
-
+public class CleanupManager : EditorWindow {
     [MenuItem("Tools/Cleanup-Z/Comment DebugLog", false, 1)]
-    static void DisableDebugLogStatementsMenuItem()
-    {
+    static void DisableDebugLogStatementsMenuItem() {
         string scriptsPath = Application.dataPath + "/Scripts"; // Target for scripts Asset Folder
-
         string[] scriptFiles = Directory.GetFiles(scriptsPath, "*.cs", SearchOption.AllDirectories); // Get all .cs file in Project
 
-        foreach (string scriptFile in scriptFiles)
-        {
+        foreach (string scriptFile in scriptFiles) {
             string scriptContent = File.ReadAllText(scriptFile);
-
             string pattern = @"\bDebug\.Log\b"; // Find Debug.Log with Regex
             string replacement = "// Debug.Log";
-
             string newScriptContent = Regex.Replace(scriptContent, pattern, replacement);
 
             File.WriteAllText(scriptFile, newScriptContent);
@@ -29,237 +22,179 @@ public class CleanupManager : EditorWindow
         Debug.Log("Debug.Log statements disabled in scripts.");
     }
 
-    //////////////////////////
-
     [MenuItem("Tools/Cleanup-Z/Clean Missing References", false, 2)]
-    static void CleanMissingReferencesMenuItem()
-    {
+    static void CleanMissingReferencesMenuItem() {
         CleanMissingReferencesInScene();
     }
 
-    static void CleanMissingReferencesInScene()
-    {
+    static void CleanMissingReferencesInScene() {
         GameObject[] rootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
-
-        foreach (GameObject rootObject in rootObjects)
-        {
+        foreach (GameObject rootObject in rootObjects) {
             CleanMissingReferencesInGameObject(rootObject);
         }
-
         Debug.Log("Missing references cleaned in the scene.");
     }
 
-    static void CleanMissingReferencesInGameObject(GameObject gameObject)
-    {
+    static void CleanMissingReferencesInGameObject(GameObject gameObject) {
         Component[] components = gameObject.GetComponents<Component>();
-
-        foreach (Component component in components)
-        {
-            if (component == null) // Find missing Component
-            {
+        foreach (Component component in components) {
+            // Find missing Component
+            if (component == null) {
                 Debug.Log("Cleaning missing component in " + gameObject.name);
-
                 // Remove Task
                 GameObjectUtility.RemoveMonoBehavioursWithMissingScript(gameObject);
             }
         }
-
         int childCount = gameObject.transform.childCount;
-        for (int i = 0; i < childCount; i++)
-        {
+        for (int i = 0; i < childCount; i++) {
             Transform child = gameObject.transform.GetChild(i);
             CleanMissingReferencesInGameObject(child.gameObject);
         }
     }
 
-    ///////////////////////////
     [MenuItem("Tools/Cleanup-Z/Documentation")]
-    static void DocumanOpen()
-    {
+    static void DocumanOpen() {
         Application.OpenURL("https://github.com/TolgaGame"); // Documentation Link
     }
-
 }
 
 ////////////////////////////////////////////////////////-- FIND All Components In Scene
-class ListComponentsIn : EditorWindow
-{
-    private static List<Component> allComponents = new List<Component>();
+class ListComponentsIn : EditorWindow {
+    private static List<Component> AllComponents = new List<Component>();
 
     [MenuItem("Tools/Cleanup-Z/All Components in Scene", false, 3)]
-    static void ListComponentsInSceneMenuItem()
-    {
+    static void ListComponentsInSceneMenuItem() {
         ListComponentsInScene(); // Show all components on GameObject in current Scene
     }
 
-    static void ListComponentsInScene()
-    {
-        allComponents.Clear();
-
+    static void ListComponentsInScene() {
+        AllComponents.Clear();
         GameObject[] rootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
-
-        foreach (GameObject rootObject in rootObjects)
-        {
+        foreach (GameObject rootObject in rootObjects) {
             CollectComponentsInGameObject(rootObject);
         }
-
         // Show List on GUI
         ShowComponentListGUI();
     }
 
-    static void CollectComponentsInGameObject(GameObject gameObject)
-    {
+    static void CollectComponentsInGameObject(GameObject gameObject) {
         // Get Component Data
         Component[] components = gameObject.GetComponents<Component>();
-
-        foreach (Component component in components)
-        {
-            if (component != null && !allComponents.Contains(component))
-            {
-                allComponents.Add(component);
+        foreach (Component component in components) {
+            if (component != null && !AllComponents.Contains(component)) {
+                AllComponents.Add(component);
             }
         }
 
         int childCount = gameObject.transform.childCount;
-        for (int i = 0; i < childCount; i++)
-        {
+        for (int i = 0; i < childCount; i++) {
             Transform child = gameObject.transform.GetChild(i);
             CollectComponentsInGameObject(child.gameObject);
         }
     }
 
-    static void ShowComponentListGUI()
-    {
+    static void ShowComponentListGUI() {
         EditorWindow window = EditorWindow.GetWindow<ListComponentsIn>();
         window.titleContent = new GUIContent("Component List");
         window.Show();
     }
 
-    void OnGUI()
-    {
+    void OnGUI() {
         GUILayout.Label("Components in Scene", EditorStyles.boldLabel);
-
-        foreach (Component component in allComponents)
-        {
+        foreach (Component component in AllComponents) {
             EditorGUILayout.ObjectField(component.GetType().Name, component, typeof(Component), true);
         }
     }
 }
 
-////////////////////////////////////////////////////////-- FIND Not Apply Prefabs
-class UnappliedPrefabsList : EditorWindow
-{
-    private static List<GameObject> unappliedPrefabs = new List<GameObject>();
+//////////////////////////////////////////// Find Not Apply Prefabs
+class UnappliedPrefabsList : EditorWindow {
+    private static List<GameObject> UnappliedPrefabs = new List<GameObject>();
 
     [MenuItem("Tools/Cleanup-Z/List Unapplied Prefabs", false, 4)]
-    static void ListUnappliedPrefabsMenuItem()
-    {
-        unappliedPrefabs.Clear();
+    static void ListUnappliedPrefabsMenuItem() {
+        UnappliedPrefabs.Clear();
         ListUnappliedPrefabsInScene();
         ShowUnappliedPrefabListGUI();
     }
 
-    static void ListUnappliedPrefabsInScene()
-    {
+    static void ListUnappliedPrefabsInScene() {
         GameObject[] rootObjects = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
-
-        foreach (GameObject rootObject in rootObjects)
-        {
+        foreach (GameObject rootObject in rootObjects) {
             ListUnappliedPrefabsInGameObject(rootObject);
         }
     }
 
-    static void ListUnappliedPrefabsInGameObject(GameObject gameObject)
-    {
-        if (PrefabUtility.GetCorrespondingObjectFromSource(gameObject) != null && PrefabUtility.HasPrefabInstanceAnyOverrides(gameObject, false))
-        {
-            unappliedPrefabs.Add(gameObject);
+    static void ListUnappliedPrefabsInGameObject(GameObject gameObject) {
+        if (PrefabUtility.GetCorrespondingObjectFromSource(gameObject) != null && PrefabUtility.HasPrefabInstanceAnyOverrides(gameObject, false)) {
+            UnappliedPrefabs.Add(gameObject);
         }
 
         int childCount = gameObject.transform.childCount;
-        for (int i = 0; i < childCount; i++)
-        {
+        for (int i = 0; i < childCount; i++) {
             Transform child = gameObject.transform.GetChild(i);
             ListUnappliedPrefabsInGameObject(child.gameObject);
         }
     }
 
-    static void ShowUnappliedPrefabListGUI()
-    {
+    static void ShowUnappliedPrefabListGUI() {
         UnappliedPrefabsList window = EditorWindow.GetWindow<UnappliedPrefabsList>();
         window.titleContent = new GUIContent("Unapplied Prefabs List");
         window.Show();
     }
 
-    void OnGUI()
-    {
+    void OnGUI() {
         GUILayout.Label("Unapplied Prefabs in Scene", EditorStyles.boldLabel);
-
-        foreach (GameObject prefabObject in unappliedPrefabs)
-        {
+        foreach (GameObject prefabObject in UnappliedPrefabs) {
             EditorGUILayout.ObjectField("Prefab", prefabObject, typeof(GameObject), true);
         }
     }
 }
 
-////////////////////////////////////////////////////////-- FIND Duplicate Assets
+/////////////////////////////////////// Find Duplicate Assets
 
-class DuplicateFilesList : EditorWindow
-{
-    private static List<string> duplicateFiles = new List<string>();
+class DuplicateFilesList : EditorWindow {
+    private static List<string> DuplicateFiles = new List<string>();
 
     [MenuItem("Tools/Cleanup-Z/List Duplicate Files", false, 6)]
-    static void ListDuplicateFilesMenuItem()
-    {
-        duplicateFiles.Clear();
+    static void ListDuplicateFilesMenuItem() {
+        DuplicateFiles.Clear();
         ListDuplicateFilesInAssets();
         ShowDuplicateFilesListGUI();
     }
 
-    static void ListDuplicateFilesInAssets()
-    {
+    static void ListDuplicateFilesInAssets() {
         string[] allFiles = Directory.GetFiles(Application.dataPath, "*.*", SearchOption.AllDirectories);
         HashSet<string> fileNamesSet = new HashSet<string>();
 
-        foreach (string filePath in allFiles)
-        {
+        foreach (string filePath in allFiles) {
             string fileName = Path.GetFileName(filePath);
 
             // Dosya ismi zaten sette varsa, bu bir duplicate dosya (meta dosyaları hariç)
-            if (!fileName.EndsWith(".meta") && fileNamesSet.Contains(fileName))
-            {
-                duplicateFiles.Add(filePath);
-            }
-            else
-            {
+            if (!fileName.EndsWith(".meta") && fileNamesSet.Contains(fileName)) {
+                DuplicateFiles.Add(filePath);
+            } else {
                 fileNamesSet.Add(fileName);
             }
         }
     }
 
-    static void ShowDuplicateFilesListGUI()
-    {
+    static void ShowDuplicateFilesListGUI() {
         DuplicateFilesList window = EditorWindow.GetWindow<DuplicateFilesList>();
         window.titleContent = new GUIContent("Duplicate Files List");
         window.Show();
     }
 
-    void OnGUI()
-    {
+    void OnGUI() {
         GUILayout.Label("Duplicate Files in Assets", EditorStyles.boldLabel);
 
-        if (duplicateFiles.Count == 0)
-        {
+        if (DuplicateFiles.Count == 0) {
             EditorGUILayout.LabelField("No duplicate files found.");
-        }
-        else
-        {
-            foreach (string filePath in duplicateFiles)
-            {
+        } else {
+            foreach (string filePath in DuplicateFiles) {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(filePath);
-                if (GUILayout.Button("Show in Project", GUILayout.Width(120)))
-                {
+                if (GUILayout.Button("Show in Project", GUILayout.Width(120))) {
                     ShowInProject(filePath);
                 }
                 EditorGUILayout.EndHorizontal();
@@ -267,8 +202,7 @@ class DuplicateFilesList : EditorWindow
         }
     }
 
-    static void ShowInProject(string filePath)
-    {
+    static void ShowInProject(string filePath) {
         string relativePath = "Assets" + filePath.Substring(Application.dataPath.Length);
         UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(relativePath);
         EditorGUIUtility.PingObject(asset);
@@ -278,39 +212,32 @@ class DuplicateFilesList : EditorWindow
 
 ////////////////////////////////////////////////////////-- FIND Uncompressed Images
 
-class UncompressedImagesList : EditorWindow
-{
+class UncompressedImagesList : EditorWindow {
     private static HashSet<string> imageExtensions = new HashSet<string> { ".png", ".jpg", ".jpeg", ".tga", ".gif" };
     private static List<string> nonCompliantImages = new List<string>();
 
     [MenuItem("Tools/Cleanup-Z/Find Uncompressed Images", false, 7)]
-    static void ListNonCompliantImagesMenuItem()
-    {
+    static void ListNonCompliantImagesMenuItem() {
         nonCompliantImages.Clear();
         ListNonCompliantImagesInAssets();
         ShowNonCompliantImagesListGUI();
     }
 
-    static void ListNonCompliantImagesInAssets()
-    {
+    static void ListNonCompliantImagesInAssets() {
         string[] allFiles = Directory.GetFiles(Application.dataPath, "*.*", SearchOption.AllDirectories);
 
-        foreach (string filePath in allFiles)
-        {
-            if (IsImage(filePath))
-            {
+        foreach (string filePath in allFiles) {
+            if (IsImage(filePath)) {
                 string relativePath = "Assets" + filePath.Substring(Application.dataPath.Length);
                 Texture2D texture = AssetDatabase.LoadAssetAtPath<Texture2D>(relativePath);
 
-                if (texture != null)
-                {
+                if (texture != null) {
                     // Texture'nin genişliği ve yüksekliği alınıyor
                     int width = texture.width;
                     int height = texture.height;
 
                     // Eğer texture 2'nin veya 4'ün katı değilse, listeye ekleyelim
-                    if (!IsPowerOfTwo(width) || !IsPowerOfTwo(height))
-                    {
+                    if (!IsPowerOfTwo(width) || !IsPowerOfTwo(height)) {
                         // Texture boyutunu Debug.Log ile kontrol edelim
                         Debug.Log(string.Format("Texture: {0}, Width: {1}, Height: {2}", relativePath, width, height));
                         nonCompliantImages.Add(filePath);
@@ -320,35 +247,27 @@ class UncompressedImagesList : EditorWindow
         }
     }
 
-    static bool IsImage(string filePath)
-    {
+    static bool IsImage(string filePath) {
         string extension = Path.GetExtension(filePath).ToLower();
         return imageExtensions.Contains(extension);
     }
 
-    static void ShowNonCompliantImagesListGUI()
-    {
+    static void ShowNonCompliantImagesListGUI() {
         UncompressedImagesList window = EditorWindow.GetWindow<UncompressedImagesList>();
         window.titleContent = new GUIContent("UncompressedImagesList Images List");
         window.Show();
     }
 
-    void OnGUI()
-    {
+    void OnGUI() {
         GUILayout.Label("Uncompressed Images in Assets", EditorStyles.boldLabel);
 
-        if (nonCompliantImages.Count == 0)
-        {
+        if (nonCompliantImages.Count == 0) {
             EditorGUILayout.LabelField("No uncompressed images found.");
-        }
-        else
-        {
-            foreach (string filePath in nonCompliantImages)
-            {
+        } else {
+            foreach (string filePath in nonCompliantImages) {
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField(filePath);
-                if (GUILayout.Button("Show in Project", GUILayout.Width(120)))
-                {
+                if (GUILayout.Button("Show in Project", GUILayout.Width(120))) {
                     ShowInProject(filePath);
                 }
                 EditorGUILayout.EndHorizontal();
@@ -356,16 +275,14 @@ class UncompressedImagesList : EditorWindow
         }
     }
 
-    static void ShowInProject(string filePath)
-    {
+    static void ShowInProject(string filePath) {
         string assetsPath = "Assets" + filePath.Substring(Application.dataPath.Length);
         UnityEngine.Object asset = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetsPath);
         EditorGUIUtility.PingObject(asset);
         Selection.activeObject = asset;
     }
 
-    static bool IsPowerOfTwo(int number)
-    {
+    static bool IsPowerOfTwo(int number) {
         return (number & (number - 1)) == 0;
     }
 }
