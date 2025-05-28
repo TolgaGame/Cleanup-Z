@@ -50,3 +50,6 @@
 <h2>INSTALLATION</h2>
 <li>Import <a href="https://github.com/TolgaGame/Cleanup-Z/releases">cleanup-z.unitypackage</a> via <em>Assets-Import Package</em></li>
 <li>Asset Store</em></li>
+
+------------------------------------------
+<h2> Made with AI support..  Date : 2023 Year </h2>
